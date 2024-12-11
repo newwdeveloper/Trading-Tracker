@@ -9,8 +9,9 @@ const Container = () => {
   return (
     <div>
       <Header />
-      <div className="flex">
-        <SideBar />
+      {/* Use flex-col for small screens and flex-row for larger screens */}
+      <div className="flex flex-col md:flex-row">
+        <SideBar className="w-full md:w-3/12" />
         <main className="flex-1">
           <Outlet />
         </main>

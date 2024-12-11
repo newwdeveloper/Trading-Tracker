@@ -79,7 +79,7 @@ const SideBar = () => {
     navigate("/DetailedInfo", { state: stock });
   };
   return (
-    <div className="w-3/12 border-slate-950 bg-slate-300 p-4">
+    <div className="w-full sm:w-full md:w-3/12 border-slate-950 bg-slate-300 p-4">
       <div className="font-bold text-lg mb-4">Your Trade Logs</div>
       <ul className="space-y-3">
         {formData.length === 0 ? (
@@ -92,11 +92,13 @@ const SideBar = () => {
               className="border-b p-2"
             >
               <button className="w-full text-left px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 flex justify-between items-center">
-                <span className="text-xl">{set.stockName}</span>
-                <span className="text-sm text-gray-200">{set.buyDate}</span>
+                <span className="text-xl md:text-xs">{set.stockName}</span>
+                <span className="text-sm md:text-xs text-gray-200">
+                  {set.buyDate}
+                </span>
                 <span
                   onClick={() => handleEdit(index)} // Pass the index here
-                  className="cursor-pointer bg-black p-2 rounded-xl hover:bg-slate-500"
+                  className="cursor-pointer bg-black p-2 rounded-xl md:p-1 md:text-xs hover:bg-slate-500"
                 >
                   Edit
                 </span>
@@ -104,7 +106,7 @@ const SideBar = () => {
                   onClick={() => {
                     handleDelete(index);
                   }}
-                  className="cursor-pointer bg-red-600 p-1 px-4 rounded-xl hover:bg-red-400"
+                  className="cursor-pointer md:text-xs md:px-1 bg-red-600 p-1 px-4 rounded-xl hover:bg-red-400"
                 >
                   X
                 </span>
