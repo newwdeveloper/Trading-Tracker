@@ -33,10 +33,31 @@ const SideBar = () => {
   // Handle the change in form fields
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEditFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+
+    setEditFormData((prevData) => {
+      const updatedFormData = {
+        ...prevData,
+        [name]: name === "stockName" ? value.toUpperCase() : value,
+      };
+
+      // Update buyAmt when buyPrice or qty changes
+      if (name === "buyPrice" || name === "qty") {
+        const buyAmt =
+          (parseFloat(updatedFormData.buyPrice) || 0) *
+          (parseFloat(updatedFormData.qty) || 0);
+        updatedFormData.buyAmt = buyAmt.toFixed(2);
+      }
+
+      // Update sellAmt when sellPrice or sellQty changes
+      if (name === "sellPrice" || name === "sellQty") {
+        const sellAmt =
+          (parseFloat(updatedFormData.sellPrice) || 0) *
+          (parseFloat(updatedFormData.sellQty) || 0);
+        updatedFormData.sellAmt = sellAmt.toFixed(2);
+      }
+
+      return updatedFormData;
+    });
   };
 
   // Handle the Edit button click to toggle form visibility
@@ -86,11 +107,7 @@ const SideBar = () => {
           <p className="text-gray-500">No Trade Added</p>
         ) : (
           formData.map((set, index) => (
-            <li
-              onClick={() => handleDetails(set)}
-              key={index}
-              className="border-b p-2"
-            >
+            <li key={index} className="border-b p-2">
               <button className="w-full text-left px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 flex justify-between items-center">
                 <span className="text-xl md:text-xs">{set.stockName}</span>
                 <span className="text-sm md:text-xs text-gray-200">
@@ -101,6 +118,12 @@ const SideBar = () => {
                   className="cursor-pointer bg-black p-2 rounded-xl md:p-1 md:text-xs hover:bg-slate-500"
                 >
                   Edit
+                </span>
+                <span
+                  onClick={() => handleDetails(set)}
+                  className="cursor-pointer md:text-xs md:px-1 bg-amber-400 p-1 px-4 rounded-xl hover:bg-red-400"
+                >
+                  info
                 </span>
                 <span
                   onClick={() => {

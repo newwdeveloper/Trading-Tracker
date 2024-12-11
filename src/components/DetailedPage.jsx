@@ -18,6 +18,16 @@ const DetailedPage = () => {
     }
     return "N/A"; // If sell price or quantity is not available, return N/A
   };
+  const calculatePercantage = () => {
+    if (stockDetails.sellPrice && stockDetails.qty) {
+      const Numerator = stockDetails.sellPrice - stockDetails.buyPrice;
+      const denominator = stockDetails.buyPrice;
+      const formula = Numerator / denominator;
+      const percantage = formula * 100;
+      return percantage.toFixed(2);
+    }
+    return "N/A";
+  };
 
   return (
     <div className="w-full max-w-screen-lg mx-auto p-4 bg-white shadow-lg rounded-lg">
@@ -38,10 +48,10 @@ const DetailedPage = () => {
               <strong>Quantity:</strong> {stockDetails.qty}
             </p>
             <p className="mb-2">
-              <strong>Buy Price:</strong> ${stockDetails.buyPrice}
+              <strong>Buy Price:</strong> ₹{stockDetails.buyPrice}
             </p>
             <p className="mb-2">
-              <strong>Total Buy Price:</strong> ${stockDetails.buyAmt}
+              <strong>Total Buy Price:</strong> ₹{stockDetails.buyAmt}
             </p>
             <p className="mb-2">
               <strong>Reason to Buy:</strong> {stockDetails.reasonBuy}
@@ -66,13 +76,13 @@ const DetailedPage = () => {
               <strong>Sell Date:</strong> {stockDetails.sellDate || "N/A"}
             </p>
             <p className="mb-2">
-              <strong>Sell Price:</strong> ${stockDetails.sellPrice || "N/A"}
+              <strong>Sell Price:</strong> ₹{stockDetails.sellPrice || "N/A"}
             </p>
             <p className="mb-2">
               <strong>Quantity Sold:</strong> {stockDetails.sellQty || "N/A"}
             </p>
             <p className="mb-2">
-              <strong>Total Sell Price:</strong> $
+              <strong>Total Sell Price:</strong> ₹
               {stockDetails.sellAmt || "N/A"}
             </p>
             <p className="mb-2">
@@ -97,7 +107,13 @@ const DetailedPage = () => {
           <div className="bg-gray-100 p-4 rounded-lg shadow-md">
             <h2 className="text-lg font-medium">Profit/Loss</h2>
             <p className="mb-2">
-              <strong>Profit/Loss:</strong> ${calculateProfit()}
+              <strong>Profit/Loss:</strong> ₹{calculateProfit()}
+            </p>
+          </div>
+          <div className="bg-gray-100 p-4 rounded-lg shadow-md">
+            <h2 className="text-lg font-medium">Profit/Loss</h2>
+            <p className="mb-2">
+              <strong>% Gain : </strong> {calculatePercantage()}%
             </p>
           </div>
         </div>
