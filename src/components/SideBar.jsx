@@ -29,6 +29,7 @@ const SideBar = () => {
   });
 
   const [editingIndex, setEditingIndex] = useState(null);
+  const [filter, setFilter] = useState("");
 
   // Handle the change in form fields
   const handleChange = (e) => {
@@ -99,14 +100,27 @@ const SideBar = () => {
   const handleDetails = (stock) => {
     navigate("/DetailedInfo", { state: stock });
   };
+  const handleFilter = (e) => {
+    setFilter(e.target.value);
+  };
+  const filteredData = formData.filter((set) =>
+    set.stockName.toLowerCase().includes(filter.toLowerCase())
+  );
   return (
     <div className="w-full sm:w-full md:w-3/12 border-slate-950 bg-slate-300 p-4">
       <div className="font-bold text-lg mb-4">Your Trade Logs</div>
+      <input
+        type="search"
+        placeholder="filter by stock name"
+        value={filter}
+        onChange={handleFilter}
+        className="w-full p-2 mb-4 border rounded"
+      />
       <ul className="space-y-3">
         {formData.length === 0 ? (
           <p className="text-gray-500">No Trade Added</p>
         ) : (
-          formData.map((set, index) => (
+          filteredData.map((set, index) => (
             <li key={index} className="border-b p-2">
               <button className="w-full text-left px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 flex justify-between items-center">
                 <span className="text-xl md:text-xs">{set.stockName}</span>

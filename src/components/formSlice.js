@@ -8,7 +8,7 @@ const formSlice = createSlice({
   initialState,
   reducers: {
     addInput: (state, action) => {
-      state.input.push(action.payload);
+      state.input.unshift(action.payload);
     },
     editInput: (state, action) => {
       const { index, updatedData } = action.payload; //payload holds index and updated data
