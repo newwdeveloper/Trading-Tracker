@@ -33,6 +33,12 @@ const DetailedPage = () => {
   const profitPercentageClass =
     calculateProfit() < 0 ? "text-red-500 text-xl" : "text-green-500 text-xl";
 
+  const truncketUrl = (url, maxLength) => {
+    if (url.length > maxLength) {
+      return url.substring(0, maxLength) + "....";
+    }
+  };
+
   return (
     <div className="w-full max-w-screen-lg mx-auto p-4 bg-white shadow-lg rounded-lg">
       <h1 className="text-xl font-bold mb-6 text-center">Trade Details</h1>
@@ -63,14 +69,14 @@ const DetailedPage = () => {
               <strong>Reason to Buy:</strong> {stockDetails.reasonBuy}
             </p>
             <p className="mb-2">
-              <strong>Link:</strong>
+              <strong>Link: </strong>
               <a
                 href={stockDetails.buyUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:underline"
               >
-                {stockDetails.buyUrl}
+                {truncketUrl(stockDetails.buyUrl, 30)}
               </a>
             </p>
           </div>
@@ -99,14 +105,14 @@ const DetailedPage = () => {
               {stockDetails.reasonSell || "N/A"}
             </p>
             <p className="mb-2">
-              <strong>Link:</strong>
+              <strong>Link: </strong>
               <a
                 href={stockDetails.sellUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:underline"
               >
-                {stockDetails.buyUrl}
+                {truncketUrl(stockDetails.sellUrl, 30)}
               </a>
             </p>
           </div>
