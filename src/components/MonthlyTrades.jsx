@@ -93,8 +93,8 @@ const YearlyTrades = () => {
                         : "bg-slate-300 text-black hover:bg-slate-500"
                     }`}
                   >
-                    <span>{month}</span>
-                    <span className="text-center">
+                    <span className="flex-grow">{month}</span>
+                    <span className="flex-shrink-0 min-w-[120px] text-center">
                       {groupedData[year][month].count} trades
                     </span>
                     <span>{expandedMonth === month ? "▲" : "▼"}</span>
