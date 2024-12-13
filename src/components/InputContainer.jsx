@@ -62,10 +62,11 @@ const InputContainer = () => {
       return updatedFormInput;
     });
   };
-  const { error, validateForm } = useFormValidation(formInput);
+  const { error, validateForm, setSubmitted } = useFormValidation(formInput);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setSubmitted(true);
     const validationError = validateForm();
     if (Object.keys(validationError).length === 0) {
       dispatch(addInput(formInput));
@@ -286,22 +287,24 @@ const InputContainer = () => {
               <p className="text-red-500 text-sm px-2">{error.sellUrl}</p>
             )}
           </div>
-          <div className="flex items-center justify-between p-4 border-b-2">
+          <div className="flex  items-center justify-between p-4 border-b-2">
             <label className="w-1/3 font-semibold text-gray-700">
               Reason to Sell
             </label>
-            <textarea
-              name="reasonSell"
-              value={formInput.reasonSell}
-              onChange={handleChange}
-              placeholder="Reason for Sell"
-              className={`flex-1 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 ${
-                error.reasonSell ? "border-red-500" : ""
-              }`}
-            />
-            {error.reasonSell && (
-              <p className="text-red-500 text-sm px-2">{error.reasonSell}</p>
-            )}
+            <div className="flex flex-col">
+              <textarea
+                name="reasonSell"
+                value={formInput.reasonSell}
+                onChange={handleChange}
+                placeholder="Reason for Sell"
+                className={`flex-1 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 ${
+                  error.reasonSell ? "border-red-500" : ""
+                }`}
+              />
+              {error.reasonSell && (
+                <p className="text-red-500 text-sm px-2">{error.reasonSell}</p>
+              )}
+            </div>
           </div>
           <div className="flex justify-center mt-6">
             <button

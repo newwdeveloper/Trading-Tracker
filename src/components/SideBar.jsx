@@ -29,7 +29,7 @@ const SideBar = () => {
     reasonSell: "",
   });
 
-  const { error, validateForm } = useFormValidation(editFormData);
+  const { error, validateForm, setSubmitted } = useFormValidation(editFormData);
 
   const [editingIndex, setEditingIndex] = useState(null);
   const [filter, setFilter] = useState("");
@@ -77,6 +77,7 @@ const SideBar = () => {
   // Handle the form submission (updating the trade data)
   const handleSubmit = (e) => {
     e.preventDefault();
+    setSubmitted(true);
     const validationError = validateForm();
     if (Object.keys(validationError).length > 0) {
       return;
