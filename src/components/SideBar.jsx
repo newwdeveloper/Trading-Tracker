@@ -106,9 +106,18 @@ const SideBar = () => {
   const filteredData = formData.filter((set) =>
     set.stockName.toLowerCase().includes(filter.toLowerCase())
   );
+
   return (
-    <div className="w-full sm:w-full md:w-3/12 border-slate-950 bg-slate-300 p-4">
+    <div className="w-full sm:w-full md:w-3/12 border-slate-950 bg-slate-300 p-4 h-screen">
       <div className="font-bold text-lg mb-4">Your Trade Logs</div>
+
+      <button
+        onClick={() => navigate("/MonthlyTrades")}
+        className="font-bold text-lg mb-4 border-2 p-2 rounded-xl text-center hover:bg-slate-400 text-white bg-slate-700"
+      >
+        Trading History
+      </button>
+
       <input
         type="search"
         placeholder="filter by stock name"
@@ -119,6 +128,8 @@ const SideBar = () => {
       <ul className="space-y-3">
         {formData.length === 0 ? (
           <p className="text-gray-500">No Trade Added</p>
+        ) : filteredData.length === 0 ? (
+          <p className="text-gray-500">No Search Found</p>
         ) : (
           filteredData.map((set, index) => (
             <li key={index} className="border-b p-2">

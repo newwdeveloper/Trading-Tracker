@@ -4,6 +4,7 @@ import DetailedPage from "./DetailedPage";
 import NoDisplayPage from "./NoDisplayPage";
 import SideBar from "./SideBar";
 import InputContainer from "./InputContainer";
+import MonthlyTrades from "./MonthlyTrades";
 
 const Container = () => {
   return (
@@ -39,6 +40,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/DetailedInfo",
         element: <DetailedPage />,
+      },
+      {
+        path: "/MonthlyTrades",
+        element: <MonthlyTrades />,
       },
     ],
   },
