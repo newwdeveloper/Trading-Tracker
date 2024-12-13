@@ -28,6 +28,10 @@ const DetailedPage = () => {
     }
     return "N/A";
   };
+  const profitClass =
+    calculateProfit() < 0 ? "text-red-500 text-xl" : "text-green-500 text-xl";
+  const profitPercentageClass =
+    calculateProfit() < 0 ? "text-red-500 text-xl" : "text-green-500 text-xl";
 
   return (
     <div className="w-full max-w-screen-lg mx-auto p-4 bg-white shadow-lg rounded-lg">
@@ -36,7 +40,9 @@ const DetailedPage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {/* Stock Information */}
           <div className="bg-gray-100 p-4 rounded-lg shadow-md">
-            <h2 className="text-lg font-medium">Stock Information</h2>
+            <h2 className="text-xl mb-1 py-2 font-medium bg-green-500 rounded-xl px-2">
+              Buy Information
+            </h2>
             <p className="mb-2">
               <strong>Stock Name:</strong>{" "}
               {stockDetails.stockName.toUpperCase()}
@@ -70,8 +76,10 @@ const DetailedPage = () => {
           </div>
 
           {/* Sell Information */}
-          <div className="bg-gray-100 p-4 rounded-lg shadow-md">
-            <h2 className="text-lg font-medium">Sell Information</h2>
+          <div className="bg-gray-100 p-4  rounded-lg shadow-md">
+            <h2 className="text-xl mb-1 py-2 font-medium bg-red-500 rounded-xl px-2">
+              Sell Information
+            </h2>
             <p className="mb-2">
               <strong>Sell Date:</strong> {stockDetails.sellDate || "N/A"}
             </p>
@@ -85,15 +93,29 @@ const DetailedPage = () => {
               <strong>Total Sell Price:</strong> ₹
               {stockDetails.sellAmt || "N/A"}
             </p>
+
             <p className="mb-2">
               <strong>Reason to Sell:</strong>{" "}
               {stockDetails.reasonSell || "N/A"}
+            </p>
+            <p className="mb-2">
+              <strong>Link:</strong>
+              <a
+                href={stockDetails.sellUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+              >
+                {stockDetails.buyUrl}
+              </a>
             </p>
           </div>
 
           {/* Holding Period */}
           <div className="bg-gray-100 p-4 rounded-lg shadow-md">
-            <h2 className="text-lg font-medium">Holding Period</h2>
+            <h2 className="text-lg font-medium bg-slate-400 py-2 rounded-xl px-1">
+              Holding Period
+            </h2>
             <p className="mb-2">
               <strong>Days Held:</strong>{" "}
               {stockDetails.buyDate
@@ -106,14 +128,18 @@ const DetailedPage = () => {
           {/* Profit/Loss */}
           <div className="bg-gray-100 p-4 rounded-lg shadow-md">
             <h2 className="text-lg font-medium">Profit/Loss</h2>
-            <p className="mb-2">
-              <strong>Profit/Loss:</strong> ₹{calculateProfit()}
+            <p className={profitClass}>
+              <strong>{calculateProfit() > 0 ? "Profit :" : "loss :"}</strong> ₹
+              {calculateProfit()}
             </p>
           </div>
           <div className="bg-gray-100 p-4 rounded-lg shadow-md">
             <h2 className="text-lg font-medium">Profit/Loss</h2>
-            <p className="mb-2">
-              <strong>% Gain : </strong> {calculatePercantage()}%
+            <p className={profitPercentageClass}>
+              <strong>
+                {calculatePercantage() > 0 ? "% Gain :" : "%Loss :"}
+              </strong>{" "}
+              {calculatePercantage()}%
             </p>
           </div>
         </div>
