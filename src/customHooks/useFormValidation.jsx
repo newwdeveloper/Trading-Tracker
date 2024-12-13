@@ -15,23 +15,18 @@ const useFormValidation = (formData) => {
     if (!formData.reasonBuy) error.reasonBuy = "give valid buying reason";
     //only shows error when sell date provided
     if (
-      formData.sellDate &&
-      (formData.sellPrice === "" || parseFloat(formData.sellPrice) <= 0)
+      formData.sellDate && // Ensure sellDate is provided
+      (formData.sellQty === "" || parseFloat(formData.sellQty.trim()) <= 0) // Handle edge cases
     ) {
-      error.sellPrice = "Sell Price should be positive";
+      error.sellQty = "Sell Quantity should be positive";
     }
     if (
       formData.sellDate &&
-      (formData.sellQty === "" ||
-        parseFloat(formData.sellQty) <= 0 ||
-        parseFloat(formData.sellQty) > parseFloat(formData.qty)) // Fix: Compare sellQty with qty
+      (formData.sellQty === "" || parseFloat(formData.sellQty.trim()) <= 0) // Fix: Compare sellQty with qty
     ) {
-      error.sellQty =
-        "Sell Quantity should be positive and not greater than the available quantity";
-    }
-    {
       error.sellQty = "Sell Quantity should be positive";
     }
+
     if (formData.sellDate && !formData.sellUrl) {
       error.sellUrl = "Sell URL missing";
     }
