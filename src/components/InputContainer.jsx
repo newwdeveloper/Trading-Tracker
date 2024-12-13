@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addInput } from "./formSlice";
 import { useNavigate } from "react-router-dom";
+import useFormValidation from "../customHooks/useFormValidation";
 
 const InputContainer = () => {
   const navigate = useNavigate();
@@ -61,25 +62,30 @@ const InputContainer = () => {
       return updatedFormInput;
     });
   };
+  const { error, validateForm } = useFormValidation(formInput);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addInput(formInput));
-    setFormInput({
-      buyDate: "",
-      stockName: "",
-      buyPrice: "",
-      qty: "",
-      buyAmt: "",
-      buyUrl: "",
-      reasonBuy: "",
-      sellDate: "",
-      sellPrice: "",
-      sellQty: "",
-      sellUrl: "",
-      reasonSell: "",
-    });
-    navigate("/");
+    const validationError = validateForm();
+    if (Object.keys(validationError).length === 0) {
+      dispatch(addInput(formInput));
+      setFormInput({
+        buyDate: "",
+        stockName: "",
+        buyPrice: "",
+        qty: "",
+        buyAmt: "",
+        buyUrl: "",
+        reasonBuy: "",
+        sellDate: "",
+        sellPrice: "",
+        sellQty: "",
+        sellUrl: "",
+        reasonSell: "",
+      });
+
+      navigate("/");
+    }
   };
 
   return (
@@ -99,8 +105,13 @@ const InputContainer = () => {
               name="buyDate"
               value={formInput.buyDate}
               onChange={handleChange}
-              className="flex-1 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500"
+              className={`flex-1 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 ${
+                error.buyDate ? "border-red-500" : ""
+              }`}
             />
+            {error.buyDate && (
+              <p className="text-red-500 text-sm px-2">{error.buyDate}</p>
+            )}
           </div>
           <div className="flex items-center justify-between p-4 border-b-2">
             <label className="w-1/3 font-semibold text-gray-700">
@@ -112,8 +123,13 @@ const InputContainer = () => {
               value={formInput.stockName}
               onChange={handleChange}
               placeholder="Enter Stock Name"
-              className="flex-1 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500"
+              className={`flex-1 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 ${
+                error.stockName ? "border-red-500" : ""
+              }`}
             />
+            {error.stockName && (
+              <p className="text-red-500 text-sm px-2">{error.stockName}</p>
+            )}
           </div>
           <div className="grid grid-cols-3 gap-6">
             <div className="flex flex-col">
@@ -123,8 +139,13 @@ const InputContainer = () => {
                 name="buyPrice"
                 value={formInput.buyPrice}
                 onChange={handleChange}
-                className="p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500"
+                className={`flex-1 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 ${
+                  error.buyPrice ? "border-red-500" : ""
+                }`}
               />
+              {error.buyPrice && (
+                <p className="text-red-500 text-sm px-2">{error.buyPrice}</p>
+              )}
             </div>
             <div className="flex flex-col">
               <label className="font-semibold text-gray-700">Quantity</label>
@@ -133,8 +154,13 @@ const InputContainer = () => {
                 name="qty"
                 value={formInput.qty}
                 onChange={handleChange}
-                className="p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500"
+                className={`flex-1 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 ${
+                  error.qty ? "border-red-500" : ""
+                }`}
               />
+              {error.qty && (
+                <p className="text-red-500 text-sm px-2">{error.qty}</p>
+              )}
             </div>
             <div className="flex flex-col">
               <label className="font-semibold text-gray-700">Buy Amount</label>
@@ -155,20 +181,34 @@ const InputContainer = () => {
               value={formInput.buyUrl}
               onChange={handleChange}
               placeholder="Enter Buy URL"
-              className="flex-1 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500"
+              className={`flex-1 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 ${
+                error.buyUrl ? "border-red-500" : ""
+              }`}
             />
+            {error.buyUrl && (
+              <p className="text-red-500 text-sm px-2">{error.buyUrl}</p>
+            )}
           </div>
           <div className="flex items-center justify-between p-4 border-b-2">
             <label className="w-1/3 font-semibold text-gray-700">
               Reason to Buy
             </label>
-            <textarea
-              name="reasonBuy"
-              value={formInput.reasonBuy}
-              onChange={handleChange}
-              placeholder="Reason for Buy"
-              className="flex-1 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500"
-            />
+            <div className="flex flex-col">
+              <textarea
+                name="reasonBuy"
+                value={formInput.reasonBuy}
+                onChange={handleChange}
+                placeholder="Reason for Buy"
+                className={`flex-1 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 ${
+                  error.reasonBuy ? "border-red-500" : ""
+                }`}
+              />
+              {error.reasonBuy && (
+                <p className="text-red-500 text-sm px-2 flex">
+                  {error.reasonBuy}
+                </p>
+              )}
+            </div>
           </div>
         </div>
 
@@ -194,8 +234,13 @@ const InputContainer = () => {
                 name="sellPrice"
                 value={formInput.sellPrice}
                 onChange={handleChange}
-                className="p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500"
+                className={`flex-1 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 ${
+                  error.sellPrice ? "border-red-500" : ""
+                }`}
               />
+              {error.sellPrice && (
+                <p className="text-red-500 text-sm px-2">{error.sellPrice}</p>
+              )}
             </div>
             <div className="flex flex-col">
               <label className="font-semibold text-gray-700">Quantity</label>
@@ -204,8 +249,13 @@ const InputContainer = () => {
                 name="sellQty"
                 value={formInput.sellQty}
                 onChange={handleChange}
-                className="p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500"
+                className={`flex-1 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 ${
+                  error.sellQty ? "border-red-500" : ""
+                }`}
               />
+              {error.sellQty && (
+                <p className="text-red-500 text-sm px-2">{error.sellQty}</p>
+              )}
             </div>
             <div className="flex flex-col">
               <label className="font-semibold text-gray-700">Sell Amount</label>
@@ -228,8 +278,13 @@ const InputContainer = () => {
               value={formInput.sellUrl}
               onChange={handleChange}
               placeholder="Enter Sell URL"
-              className="flex-1 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500"
+              className={`flex-1 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 ${
+                error.sellUrl ? "border-red-500" : ""
+              }`}
             />
+            {error.sellUrl && (
+              <p className="text-red-500 text-sm px-2">{error.sellUrl}</p>
+            )}
           </div>
           <div className="flex items-center justify-between p-4 border-b-2">
             <label className="w-1/3 font-semibold text-gray-700">
@@ -240,8 +295,13 @@ const InputContainer = () => {
               value={formInput.reasonSell}
               onChange={handleChange}
               placeholder="Reason for Sell"
-              className="flex-1 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500"
+              className={`flex-1 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 ${
+                error.reasonSell ? "border-red-500" : ""
+              }`}
             />
+            {error.reasonSell && (
+              <p className="text-red-500 text-sm px-2">{error.reasonSell}</p>
+            )}
           </div>
           <div className="flex justify-center mt-6">
             <button

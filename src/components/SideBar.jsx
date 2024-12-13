@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { editInput, deleteInput, addInput } from "./formSlice";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useFormValidation from "../customHooks/useFormValidation";
 
 const SideBar = () => {
   const formData = useSelector((store) => store.input.input);
@@ -27,6 +28,8 @@ const SideBar = () => {
     sellUrl: "",
     reasonSell: "",
   });
+
+  const { error, validateForm } = useFormValidation(editFormData);
 
   const [editingIndex, setEditingIndex] = useState(null);
   const [filter, setFilter] = useState("");
@@ -74,6 +77,10 @@ const SideBar = () => {
   // Handle the form submission (updating the trade data)
   const handleSubmit = (e) => {
     e.preventDefault();
+    const validationError = validateForm();
+    if (Object.keys(validationError).length > 0) {
+      return;
+    }
     if (editingIndex !== null) {
       dispatch(editInput({ index: editingIndex, updatedData: editFormData }));
       setEditingIndex(null); // Clear the edit mode after submission
@@ -97,6 +104,7 @@ const SideBar = () => {
       reasonSell: "",
     });
   };
+
   const handleDetails = (stock) => {
     navigate("/DetailedInfo", { state: stock });
   };
@@ -175,32 +183,60 @@ const SideBar = () => {
                           value={editFormData.stockName}
                           onChange={handleChange}
                           placeholder="Stock Name"
-                          className="w-full p-2 border rounded"
+                          className={`w-full p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 ${
+                            error.stockName ? "border-red-500" : ""
+                          }`}
                         />
+                        {error.stockName && (
+                          <p className="text-red-500 text-sm px-2">
+                            {error.stockName}
+                          </p>
+                        )}
                         <input
                           type="date"
                           name="buyDate"
                           value={editFormData.buyDate}
                           onChange={handleChange}
                           placeholder="Buy Date"
-                          className="w-full p-2 border rounded"
+                          className={`w-full p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 ${
+                            error.buyDate ? "border-red-500" : ""
+                          }`}
                         />
+                        {error.buyDate && (
+                          <p className="text-red-500 text-sm px-2">
+                            {error.buyDate}
+                          </p>
+                        )}
                         <input
                           type="number"
                           name="buyPrice"
                           value={editFormData.buyPrice}
                           onChange={handleChange}
                           placeholder="Buy Price"
-                          className="w-full p-2 border rounded"
+                          className={`w-full p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 ${
+                            error.buyPrice ? "border-red-500" : ""
+                          }`}
                         />
+                        {error.buyPrice && (
+                          <p className="text-red-500 text-sm px-2">
+                            {error.buyPrice}
+                          </p>
+                        )}
                         <input
                           type="number"
                           name="qty"
                           value={editFormData.qty}
                           onChange={handleChange}
                           placeholder="Quantity"
-                          className="w-full p-2 border rounded"
+                          className={`w-full p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 ${
+                            error.qty ? "border-red-500" : ""
+                          }`}
                         />
+                        {error.qty && (
+                          <p className="text-red-500 text-sm px-2">
+                            {error.qty}
+                          </p>
+                        )}
                         <input
                           type="number"
                           name="buyAmt"
@@ -215,16 +251,30 @@ const SideBar = () => {
                           value={editFormData.reasonBuy}
                           onChange={handleChange}
                           placeholder="Reason to Buy"
-                          className="w-full p-2 border rounded"
+                          className={`w-full p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 ${
+                            error.reasonBuy ? "border-red-500" : ""
+                          }`}
                         />
+                        {error.reasonBuy && (
+                          <p className="text-red-500 text-sm px-2">
+                            {error.reasonBuy}
+                          </p>
+                        )}
                         <input
                           type="text"
                           name="buyUrl"
                           value={editFormData.buyUrl}
                           onChange={handleChange}
                           placeholder="Reference URL for Buy"
-                          className="w-full p-2 border rounded"
+                          className={`w-full p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 ${
+                            error.buyUrl ? "border-red-500" : ""
+                          }`}
                         />
+                        {error.buyUrl && (
+                          <p className="text-red-500 text-sm px-2">
+                            {error.buyUrl}
+                          </p>
+                        )}
                       </div>
 
                       <div className="w-full">
@@ -242,16 +292,30 @@ const SideBar = () => {
                           value={editFormData.sellPrice}
                           onChange={handleChange}
                           placeholder="Sell Price"
-                          className="w-full p-2 border rounded"
+                          className={`w-full p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 ${
+                            error.sellPrice ? "border-red-500" : ""
+                          }`}
                         />
+                        {error.sellPrice && (
+                          <p className="text-red-500 text-sm px-2">
+                            {error.sellPrice}
+                          </p>
+                        )}
                         <input
                           type="number"
                           name="sellQty"
                           value={editFormData.sellQty}
                           onChange={handleChange}
                           placeholder="Sell Quantity"
-                          className="w-full p-2 border rounded"
+                          className={`w-full p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 ${
+                            error.sellQty ? "border-red-500" : ""
+                          }`}
                         />
+                        {error.sellQty && (
+                          <p className="text-red-500 text-sm px-2">
+                            {error.sellQty}
+                          </p>
+                        )}
                         <input
                           type="number"
                           name="sellAmt"
@@ -266,16 +330,30 @@ const SideBar = () => {
                           value={editFormData.reasonSell}
                           onChange={handleChange}
                           placeholder="Reason to Sell"
-                          className="w-full p-2 border rounded"
+                          className={`w-full p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 ${
+                            error.reasonSell ? "border-red-500" : ""
+                          }`}
                         />
+                        {error.reasonSell && (
+                          <p className="text-red-500 text-sm px-2">
+                            {error.reasonSell}
+                          </p>
+                        )}
                         <input
                           type="text"
                           name="sellUrl"
                           value={editFormData.sellUrl}
                           onChange={handleChange}
                           placeholder="Reference URL for Sell"
-                          className="w-full p-2 border rounded"
+                          className={`w-full p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 ${
+                            error.sellUrl ? "border-red-500" : ""
+                          }`}
                         />
+                        {error.sellUrl && (
+                          <p className="text-red-500 text-sm px-2">
+                            {error.sellUrl}
+                          </p>
+                        )}
                         <button
                           type="submit"
                           className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"

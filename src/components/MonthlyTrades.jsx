@@ -58,86 +58,94 @@ const YearlyTrades = () => {
       </div>
 
       {/* Render Year Buttons */}
-      {years.map((year) => (
-        <div key={year}>
-          <div
-            onClick={() => toggleYear(year)}
-            className={`p-2 rounded cursor-pointer flex justify-between items-center ${
-              expandedYear === year
-                ? "bg-amber-300 text-black hover:bg-amber-600"
-                : "bg-slate-400 text-white hover:bg-slate-600"
-            }`}
-          >
-            <span>{year}</span>
-            <span>
-              {groupedData[year] &&
-                Object.values(groupedData[year]).reduce(
-                  (acc, curr) => acc + curr.count,
-                  0
-                )}{" "}
-              trades
-            </span>
-            <span>{expandedYear === year ? "▲" : "▼"}</span>
-          </div>
-
-          {/* Render Months for the Expanded Year */}
-          {expandedYear === year && (
-            <div className="mt-2">
-              {Object.keys(groupedData[year]).map((month) => (
-                <div key={month}>
-                  <div
-                    onClick={() => toggleMonth(month)}
-                    className={`p-2 rounded cursor-pointer flex justify-between items-center ${
-                      expandedMonth === month
-                        ? "bg-amber-200 text-black hover:bg-amber-400"
-                        : "bg-slate-300 text-black hover:bg-slate-500"
-                    }`}
-                  >
-                    <span className="flex-grow">{month}</span>
-                    <span className="flex-shrink-0 min-w-[120px] text-center">
-                      {groupedData[year][month].count} trades
-                    </span>
-                    <span>{expandedMonth === month ? "▲" : "▼"}</span>
-                  </div>
-
-                  {/* Render Trades for the Expanded Month */}
-                  {expandedMonth === month && (
-                    <ul className="mt-2 space-y-2">
-                      {/* Render trades for the current month if available */}
-                      {groupedData[year][month]?.trades.map((trade, index) => (
-                        <li
-                          key={index}
-                          className="border-b p-2 flex justify-between items-center"
-                        >
-                          <span className="text-black">{trade.stockName}</span>
-                          <span className="text-sm text-gray-500">
-                            {trade.buyDate}
-                          </span>
-                          <button
-                            onClick={() =>
-                              navigate("/DetailedInfo", { state: trade })
-                            }
-                            className="text-blue-500 hover:underline"
-                          >
-                            Details
-                          </button>
-                        </li>
-                      ))}
-                      {/* If no trades for this month */}
-                      {(!groupedData[year][month] ||
-                        groupedData[year][month].length === 0) && (
-                        <li className="text-center text-3xl text-gray-500">
-                          No trades for this month
-                        </li>
-                      )}
-                    </ul>
-                  )}
-                </div>
-              ))}
+      {years && years.length === 0 ? (
+        <p className="text-center">No Data Available</p>
+      ) : (
+        years.map((year) => (
+          <div key={year}>
+            <div
+              onClick={() => toggleYear(year)}
+              className={`p-2 rounded cursor-pointer flex justify-between items-center ${
+                expandedYear === year
+                  ? "bg-amber-300 text-black hover:bg-amber-600"
+                  : "bg-slate-400 text-white hover:bg-slate-600"
+              }`}
+            >
+              <span>{year}</span>
+              <span>
+                {groupedData[year] &&
+                  Object.values(groupedData[year]).reduce(
+                    (acc, curr) => acc + curr.count,
+                    0
+                  )}{" "}
+                trades
+              </span>
+              <span>{expandedYear === year ? "▲" : "▼"}</span>
             </div>
-          )}
-        </div>
-      ))}
+
+            {/* Render Months for the Expanded Year */}
+            {expandedYear === year && (
+              <div className="mt-2">
+                {Object.keys(groupedData[year]).map((month) => (
+                  <div key={month}>
+                    <div
+                      onClick={() => toggleMonth(month)}
+                      className={`p-2 rounded cursor-pointer flex justify-between items-center ${
+                        expandedMonth === month
+                          ? "bg-amber-200 text-black hover:bg-amber-400"
+                          : "bg-slate-300 text-black hover:bg-slate-500"
+                      }`}
+                    >
+                      <span className="flex-grow">{month}</span>
+                      <span className="flex-shrink-0 min-w-[120px] text-center">
+                        {groupedData[year][month].count} trades
+                      </span>
+                      <span>{expandedMonth === month ? "▲" : "▼"}</span>
+                    </div>
+
+                    {/* Render Trades for the Expanded Month */}
+                    {expandedMonth === month && (
+                      <ul className="mt-2 space-y-2">
+                        {/* Render trades for the current month if available */}
+                        {groupedData[year][month]?.trades.map(
+                          (trade, index) => (
+                            <li
+                              key={index}
+                              className="border-b p-2 flex justify-between items-center"
+                            >
+                              <span className="text-black">
+                                {trade.stockName}
+                              </span>
+                              <span className="text-sm text-gray-500">
+                                {trade.buyDate}
+                              </span>
+                              <button
+                                onClick={() =>
+                                  navigate("/DetailedInfo", { state: trade })
+                                }
+                                className="text-blue-500 hover:underline"
+                              >
+                                Details
+                              </button>
+                            </li>
+                          )
+                        )}
+                        {/* If no trades for this month */}
+                        {(!groupedData[year][month] ||
+                          groupedData[year][month].length === 0) && (
+                          <li className="text-center text-3xl text-gray-500">
+                            No trades for this month
+                          </li>
+                        )}
+                      </ul>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ))
+      )}
     </div>
   );
 };
