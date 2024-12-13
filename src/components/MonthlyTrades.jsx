@@ -25,9 +25,10 @@ const YearlyTrades = () => {
         groupedData[year] = {};
       }
       if (!groupedData[year][month]) {
-        groupedData[year][month] = [];
+        groupedData[year][month] = { trades: [], count: 0 };
       }
-      groupedData[year][month].push(trade);
+      groupedData[year][month].trades.push(trade);
+      groupedData[year][month].count++;
     });
 
     return groupedData;
@@ -68,6 +69,14 @@ const YearlyTrades = () => {
             }`}
           >
             <span>{year}</span>
+            <span>
+              {groupedData[year] &&
+                Object.values(groupedData[year]).reduce(
+                  (acc, curr) => acc + curr.count,
+                  0
+                )}{" "}
+              trades
+            </span>
             <span>{expandedYear === year ? "▲" : "▼"}</span>
           </div>
 
@@ -85,6 +94,9 @@ const YearlyTrades = () => {
                     }`}
                   >
                     <span>{month}</span>
+                    <span className="text-center">
+                      {groupedData[year][month].count} trades
+                    </span>
                     <span>{expandedMonth === month ? "▲" : "▼"}</span>
                   </div>
 
@@ -92,7 +104,7 @@ const YearlyTrades = () => {
                   {expandedMonth === month && (
                     <ul className="mt-2 space-y-2">
                       {/* Render trades for the current month if available */}
-                      {groupedData[year][month]?.map((trade, index) => (
+                      {groupedData[year][month]?.trades.map((trade, index) => (
                         <li
                           key={index}
                           className="border-b p-2 flex justify-between items-center"
