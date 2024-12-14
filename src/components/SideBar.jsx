@@ -3,6 +3,7 @@ import { editInput, deleteInput, addInput } from "./formSlice";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useFormValidation from "../customHooks/useFormValidation";
+import redDot from "../assets/redDot.png";
 
 const SideBar = () => {
   const formData = useSelector((store) => store.input.input);
@@ -115,9 +116,15 @@ const SideBar = () => {
   const filteredData = formData.filter((set) =>
     set.stockName.toLowerCase().includes(filter.toLowerCase())
   );
+  const trunketUrl = (stockName, maxLength) => {
+    if (!stockName) return ""; // Handle undefined or empty values
+    return stockName.length > maxLength
+      ? stockName.substring(0, maxLength) + "..."
+      : stockName;
+  };
 
   return (
-    <div className="w-full sm:w-full md:w-3/12 border-slate-950 bg-slate-300 p-4 h-screen">
+    <div className="w-full sm:w-full md:w-4/12 border-slate-950 bg-slate-300 p-4 h-screen">
       <div className="font-bold text-lg mb-4">Your Trade Logs</div>
 
       <button
@@ -142,31 +149,48 @@ const SideBar = () => {
         ) : (
           filteredData.map((set, index) => (
             <li key={index} className="border-b p-2">
-              <button className="w-full text-left px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 flex justify-between items-center">
-                <span className="text-xl md:text-xs">{set.stockName}</span>
-                <span className="text-sm md:text-xs text-gray-200">
-                  {set.buyDate}
-                </span>
-                <span
-                  onClick={() => handleEdit(index)} // Pass the index here
-                  className="cursor-pointer bg-black p-2 rounded-xl md:p-1 md:text-xs hover:bg-slate-500"
-                >
-                  Edit
-                </span>
-                <span
-                  onClick={() => handleDetails(set)}
-                  className="cursor-pointer md:text-xs md:px-1 bg-amber-400 p-1 px-4 rounded-xl hover:bg-red-400"
-                >
-                  info
-                </span>
-                <span
-                  onClick={() => {
-                    handleDelete(index);
-                  }}
-                  className="cursor-pointer md:text-xs md:px-1 bg-red-600 p-1 px-4 rounded-xl hover:bg-red-400"
-                >
-                  X
-                </span>
+              <button className="w-full text-left p-2 flex-wrap bg-blue-500 text-white rounded-lg hover:bg-blue-600 flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  {!set.sellDate && (
+                    <span className="text-xl md:text-xs">
+                      <img
+                        className="w-4 h-4 object-cover"
+                        src={redDot}
+                        alt="signal"
+                      />
+                    </span>
+                  )}
+
+                  <span className="text-xl md:text-lg">
+                    {trunketUrl(set.stockName, 9)}
+                  </span>
+
+                  <span className="text-sm md:text-xs text-gray-200">
+                    {set.buyDate}
+                  </span>
+                </div>
+                <div className="flex justify-center items-center gap-1">
+                  <span
+                    onClick={() => handleEdit(index)} // Pass the index here
+                    className="cursor-pointer bg-black p-2 rounded-xl md:p-1 md:text-xs  hover:bg-slate-500"
+                  >
+                    Edit
+                  </span>
+                  <span
+                    onClick={() => handleDetails(set)}
+                    className="cursor-pointer md:text-xs md:px-1 bg-amber-400 p-1 px-4 rounded-xl hover:bg-red-400"
+                  >
+                    info
+                  </span>
+                  <span
+                    onClick={() => {
+                      handleDelete(index);
+                    }}
+                    className="cursor-pointer md:text-sm md:px-1 md:w-6 md:h-6 md:rounded-full md:text-center bg-red-600 p-1 w-8 text-center h-8 rounded-xl flex justify-center items-center  hover:bg-red-400"
+                  >
+                    X
+                  </span>
+                </div>
               </button>
 
               {/* Render Edit Form Below Selected Trade, Only if the current trade is being edited */}
